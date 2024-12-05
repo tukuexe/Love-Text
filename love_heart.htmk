@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Heart</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #f4f4f4;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #heart {
+            font-size: 200px;
+            color: red;
+            cursor: pointer;
+            position: absolute;
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+            animation: heartAnimation 2s infinite;
+        }
+        @keyframes heartAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        #message {
+            display: none;
+            font-size: 32px;
+            color: #ff3366;
+            font-weight: bold;
+            text-align: center;
+            animation: fadeIn 2s forwards;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .heart-piece {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: red;
+            border-radius: 50%;
+            opacity: 1;
+            animation: pieceAnimation 1.5s forwards;
+        }
+        @keyframes pieceAnimation {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="heart">❤️</div>
+    <div id="message">I love you with all my heart!</div>
+
+    <script>
+        // Heart click event
+        document.getElementById('heart').addEventListener('click', function() {
+            // Hide the heart and show the message after breaking the heart
+            document.getElementById('heart').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+
+            // Break the heart into pieces
+            breakHeart();
+        });
+
+        // Function to simulate the breaking of the heart into pieces
+        function breakHeart() {
+            const heart = document.getElementById('heart');
+            const heartRect = heart.getBoundingClientRect();
+            const piecesCount = 30; // Number of pieces to break the heart into
+
+            for (let i = 0; i < piecesCount; i++) {
+                let piece = document.createElement('div');
+                piece.classList.add('heart-piece');
+
+                // Randomly position the pieces
+                let x = heartRect.left + Math.random() * heartRect.width;
+                let y = heartRect.top + Math.random() * heartRect.height;
+
+                piece.style.left = `${x}px`;
+                piece.style.top = `${y}px`;
+
+                // Random direction and movement speed for the pieces
+                let angle = Math.random() * 360;
+                let distance = Math.random() * 200 + 150;
+                let speed = Math.random() * 2 + 1;
+
+                piece.style.animation = `pieceAnimation ${speed}s forwards`;
+
+                // Add the piece to the body
+                document.body.appendChild(piece);
+
+                // Remove the piece after animation ends
+                setTimeout(function() {
+                    piece.remove();
+                }, speed * 1000);
+            }
+
+            // Show the message after all pieces have disappeared
+            setTimeout(function() {
+                document.getElementById('message').style.display = 'block';
+            }, 2000); // Wait for 2 seconds to ensure the pieces are broken
+        }
+    </script>
+
+</body>
+</html>
